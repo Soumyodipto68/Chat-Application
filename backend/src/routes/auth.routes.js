@@ -1,5 +1,6 @@
 import express from "express";
-import { signup, login, logout } from "../controllers/auth.controllers.js";
+import { checkAuth } from "../middleware/auth.middleware.js";
+import { signup, login, logout,updateProfile } from "../controllers/auth.controllers.js";
 const route = express.Router();
 
 route.post("/signup", signup);
@@ -8,5 +9,6 @@ route.post("/login", login);
 
 route.get("/logout", logout);
 
+route.post("update-profile",checkAuth,updateProfile)
 
 export default route;
