@@ -7,7 +7,7 @@ import LoginPage from './Pages/LoginPage'
 import ProfilePage from './Pages/ProfilePage'
 const App = () => {
   return (
-    <div>
+    <div className='min-h-screen bg-slate-700'>
       <Navbar />
       <Routes>
         <Route path='/' element={<HomePage/>} />
