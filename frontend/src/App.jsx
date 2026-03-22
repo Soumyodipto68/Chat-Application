@@ -5,6 +5,7 @@ import HomePage from './Pages/HomePage'
 import SignupPage from './Pages/SignupPage'
 import LoginPage from './Pages/LoginPage'
 import ProfilePage from './Pages/ProfilePage'
+import {Toaster} from 'react-hot-toast'
 const App = () => {
   return (
     <div className='min-h-screen bg-slate-700'>
@@ -15,6 +16,7 @@ const App = () => {
         <Route path='/login' element={<LoginPage/>} />
         <Route path='/profile' element={<ProfilePage/>} />
       </Routes>
+      <Toaster/>
     </div>
   )
 }
