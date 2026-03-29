@@ -2,8 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { FiMessageSquare } from "react-icons/fi";
 import { FaSignOutAlt } from "react-icons/fa";
+import { authStore } from '../store/authStore';
 
 const Navbar = () => {
+  const {logout, loggedUser } = authStore();
+
   return (
     <nav className="bg-linear-to-r from-cyan-700 to-blue-700 px-5 py-1 flex items-center justify-between shadow-lg lg:px-6">
       <div className="flex items-center gap-3">
@@ -20,7 +23,7 @@ const Navbar = () => {
           </span>
         </Link>
       </div>
-      {/* {loggedUser && (
+      {loggedUser && (
         <div className="flex items-center gap-8">
           <Link
             to="/profile"
@@ -28,7 +31,7 @@ const Navbar = () => {
             title="Profile"
           >
             <img
-              src={loggedUser.profilepic}
+              src={loggedUser.profilePicture}
               alt="Profile"
               className="w-8 h-8 rounded-full"
             />
@@ -43,7 +46,7 @@ const Navbar = () => {
             <span className="text-xs ml-2">Logout</span>
           </button>
         </div>
-      )} */}
+      )}
     </nav> 
   )
 }
