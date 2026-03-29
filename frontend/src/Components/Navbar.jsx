@@ -6,7 +6,7 @@ import { authStore } from '../store/authStore';
 
 const Navbar = () => {
   const {logout, loggedUser } = authStore();
-
+  console.log(loggedUser);
   return (
     <nav className="bg-linear-to-r from-cyan-700 to-blue-700 px-5 py-1 flex items-center justify-between shadow-lg lg:px-6">
       <div className="flex items-center gap-3">
