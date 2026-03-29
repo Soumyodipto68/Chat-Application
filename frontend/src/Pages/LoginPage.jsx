@@ -1,4 +1,13 @@
+import { useState } from "react";
+import { authStore } from "../store/authStore";
 const LoginPage = () => {
+  const [email,setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const { login } = authStore();
+  const handelSubmit = (e)=>{
+    e.preventDefault()
+    login({ email, password });
+  }
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="rounded-2xl shadow-2xl p-8 w-full max-w-md bg-slate-400 relative overflow-hidden">
@@ -8,7 +17,7 @@ const LoginPage = () => {
           <h2 className="text-3xl font-bold text-center text-black mb-6 drop-shadow-lg">
             Login
           </h2>
-          <form className="space-y-5">
+          <form onSubmit={handelSubmit} className="space-y-5">
             <div>
               <label className="block text-gray-900 mb-1" htmlFor="email">
                 Email Address
@@ -18,6 +27,8 @@ const LoginPage = () => {
                 type="email"
                 className="w-full px-4 py-2 border border-black bg-gray-200 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 required
                 autoComplete="email"
               />
@@ -31,6 +42,8 @@ const LoginPage = () => {
                 type="password"
                 className="w-full px-4 py-2 border border-black bg-gray-200 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
               />

@@ -10,8 +10,20 @@ export const authStore = create((set)=>({
       toast.success("Signup successful")
     } catch (error) {
       console.error("Error signing up:", error);
-      toast.error("Error signing up")
+      toast.error("Failed to sign up")
+      set({loggedUser:null})
+    }
+  },
+  login : async(data)=>{
+    try{
+      const res = await axiosInstance.post("/auth/login",data)
+      set({loggedUser:res.data.user})
+      toast.success("Login successful")
+    }catch (error) {
+      console.error("Error logging in:", error);
+      toast.error("Failed to login")
       set({loggedUser:null})
     }
   }
+
 }))
