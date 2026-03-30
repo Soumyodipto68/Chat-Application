@@ -6,7 +6,7 @@ export const checkAuth = async (req,res,next)=>{
     if(!token){
       res.status(400).json({message:"token is required"})
     }
-    const decode = jwt.verify(token.process.env.secretkey)
+    const decode = jwt.verify(token,process.env.secretkey)
     if(!decode){
        res.status(401).json({message:"unauthorise invalid token"})
     }
