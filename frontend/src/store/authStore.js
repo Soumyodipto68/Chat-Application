@@ -37,7 +37,7 @@ export const authStore = create((set)=>({
   },
   updateProfile: async(data)=>{
     try{
-    const res= await axiosInstance.put("/auth/update-profile",data)
+    const res= await axiosInstance.post("/auth/update-profile",data)
     set({loggedUser:res.data})
     toast.success("Profile Picture  updated successfully")
     }catch (error) {

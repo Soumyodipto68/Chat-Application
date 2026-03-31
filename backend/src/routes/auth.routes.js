@@ -9,6 +9,6 @@ route.post("/login", login);
 
 route.get("/logout", logout);
 
-route.put("/update-profile",checkAuth,updateProfile)
+route.post("/update-profile",checkAuth,updateProfile)
 
 export default route;
