@@ -3,13 +3,10 @@ import User from "../models/user.models.js"
 export const checkAuth = async (req,res,next)=>{
   try{
     const token = req.cookies.jwt;
-    console.log("Token:", token);
     if(!token){
-
       return res.status(400).json({message:"token is required"})
     }
     const decode = jwt.verify(token,process.env.JWT_SECRET )
-             console.log("Decoded:", decode);
     if(!decode){
        return res.status(401).json({message:"unauthorise invalid token"})
   
