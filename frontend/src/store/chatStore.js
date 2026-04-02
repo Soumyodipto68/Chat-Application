@@ -1,6 +1,7 @@
 import {create} from "zustand"
 import toast from "react-hot-toast"
 import { axiosInstance } from "../lib/axios"
+import { authStore } from "./authStore"
 
 export const chatStore = create((set,get)=>({
    users: [],
@@ -30,15 +31,27 @@ export const chatStore = create((set,get)=>({
          console.error("Error fetching messages:", error);
       }
    },
-   sendMessage: async()=>{
+   sendMessage: async(data)=>{
       const {selectedUser,messages} = get();
       try{
-        const res = await axiosInstance.post(`/messages/sendmessage/${selectedUser._id}`)
+        const res = await axiosInstance.post(`/messages/sendmessage/${selectedUser._id}`, data)
         set({ messages: [...messages, res.data] });
       }catch(error){
         toast.error("Failed to send message")
         console.error("Error sending message:", error);
       }
+   },
+   listenForNewMessage:()=>{
+      const socket = authStore.get().socket;
+      socket.on("newMessage",(message)=>{
+         const {messages} = get();
+         set({messages: [...messages, message]})
+      })
+   },
+
+   stopListeningforMessages:()=>{
+      const socket = authStore.get().socket;
+      socket.off("newMessage")
    }
 
 }))
