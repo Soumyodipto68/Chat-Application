@@ -13,17 +13,17 @@ const ChatHeader = () => {
           className="w-10 h-10 lg:w-12 lg:h-12 rounded-full object-cover"
         />
         <div>
-          <h2 className="text-lg lg:text-xl font-semibold truncate">
+          <h2 className="text-lg lg:text-xl text-amber-50 font-semibold truncate">
             {selectedUser.username}
           </h2>
-          <p className="text-sm lg:text-base text-base-content/60">
+          <p className="text-sm lg:text-base text-amber-200 text-base-content/60">
             {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
           </p>
         </div>
       </div>
       <button className="p-2 lg:p-3 rounded-full hover:bg-base-300">
         <span
-          className="material-icons text-lg lg:text-xl"
+          className="material-icons text-lg lg:text-xl text-white"
           onClick={() => setSelectedUser(null)}
         >
           x

@@ -14,8 +14,8 @@ const Sidebar = () => {
     <aside className="h-full w-20 lg:w-72 flex flex-col transition-all duration-200 bg-gradient-to-b from-base-200 to-base-100">
       <div className=" w-full p-5 bg-base-100/80 backdrop-blur-md shadow-xl">
         <div className="flex items-center gap-3">
-          <FaUserCircle className="size-7 text-primary" />
-          <span className="font-semibold text-lg hidden lg:block tracking-wide text-primary">
+          <FaUserCircle className="size-7 text-primary text-white" />
+          <span className="font-semibold text-lg hidden lg:block tracking-wide text-primary text-white">
             Contacts
           </span>
         </div>
@@ -34,7 +34,7 @@ const Sidebar = () => {
           >
             <div className="relative flex-shrink-0">
               <img
-                src={user.profilepic}
+                src={user.profilePicture}
                 alt="profile"
                 className="size-12 object-cover rounded-full group-hover:border-primary/60 transition-all"
               />
@@ -43,12 +43,12 @@ const Sidebar = () => {
               )}
             </div>
             <div className="hidden lg:flex flex-col items-start flex-1 min-w-0">
-              <span className="font-medium text-base-content truncate">
+              <span className="font-medium text-base-content truncate text-amber-50">
                 {user.username}
               </span>
-              <span className="text-xs text-base-content/60 truncate">
+              <span className="text-xs text-base-content/60 truncate text-gray-400">
                 {onlineUsers.includes(user._id) ? "Online" : "Offline"}
-                Offline
+                {/* Offline */}
               </span>
             </div>
           </button>

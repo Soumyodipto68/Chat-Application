@@ -53,18 +53,19 @@ export const authStore = create((set,get)=>({
     }
  },
 
- connectSocket: ()=>{
-  const {loggedUser} = get();
-  const socket = io("https://localhost:5000",{
-    query:{userId: loggedUser._id}
-  })
-  socket.connect()
-  set({socket:socket})
-  socket.on("onlineUsers",(userId)=>{
-    set({onlineUsers: userId})
-    console.log(userId);
-  })
- },
+  connectSocket: () => {
+    const { loggedUser } = get();
+    const socket = io("http://localhost:5000", {
+      query: { userId: loggedUser._id },
+    });
+    socket.connect();
+    set({ socket: socket });
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+      console.log(userIds);
+    });
+  },
+  
  disconnectSocket:()=>{
   if(get().socket?.connected) get().socket.disconnect()
  }

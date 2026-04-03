@@ -41,16 +41,16 @@ export const chatStore = create((set,get)=>({
         console.error("Error sending message:", error);
       }
    },
-   listenForNewMessage:()=>{
-      const socket = authStore.get().socket;
-      socket.on("newMessage",(message)=>{
-         const {messages} = get();
-         set({messages: [...messages, message]})
-      })
-   },
+  listenForNewMessage: () => {
+    const socket = authStore.getState().socket;
+    socket.on("newMessage", (newMessage) => {
+      set({ messages: [...get().messages, newMessage] });
+    });
+  },
 
-   stopListeningforMessages:()=>{
-      const socket = authStore.get().socket;
+
+    stopListeningForMessages:()=>{
+      const socket = authStore.getState().socket;
       socket.off("newMessage")
    }
 
