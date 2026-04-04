@@ -1,6 +1,6 @@
 import Users from "../models/user.models.js";
 import Message from "../models/messages.models.js";
-import { getReceiverSocketId } from "../lib/socket.js";
+import { getReceiverSocketId,io } from "../lib/socket.js";
 
 export const contactsforSidebar = async(req,res)=>{
   try {
@@ -16,7 +16,7 @@ export const contactsforSidebar = async(req,res)=>{
 }
 
 export const getMessages = async(req,res)=>{
-    const receiverId = req.params.receiverId;
+    const receiverId = req.params._id;
     const senderId = req.user._id;
   try{
      const messages = await Message.find({
@@ -36,7 +36,7 @@ export const sendMessage = async(req,res)=>{
   try{
     const {text,image} = req.body;
     const senderId = req.user._id;
-    const receiverId = req.params.receiverId;
+    const receiverId = req.params._id;
     let imageUrl;
     if(image){
       const uploadResult = await cloudinary.uploader.upload(image)

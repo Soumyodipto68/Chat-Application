@@ -4,6 +4,6 @@ import { contactsforSidebar, getMessages,sendMessage } from "../controllers/mess
 
 const route = express.Router();
 route.get("/users",checkAuth,contactsforSidebar)
-route.get("/getmessages/:id",checkAuth,getMessages)
-route.post("/sendmessage/:id",checkAuth,sendMessage)
+route.get("/getmessages/:_id",checkAuth,getMessages)
+route.post("/sendmessage/:_id",checkAuth,sendMessage)
 export default route;
