@@ -19,7 +19,7 @@ const Navbar = () => {
             <FiMessageSquare className="text-5xl text-white animate-pulse bg-blue-900 p-2 rounded-lg" />
           </span>
           <span className="text-4xl py-2 px-2 font-bold text-whitetracking-wide drop-shadow-lg select-none">
-            ChatApp
+            Chatter Box
           </span>
         </Link>
       </div>
