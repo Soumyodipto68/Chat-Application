@@ -54,21 +54,29 @@ updateProfile: async (data) => {
   }
 },
 
-  connectSocket: () => {
-    const { loggedUser } = get();
-    const socket = io("http://localhost:5000", {
-      query: { userId: loggedUser._id },
-    });
-    socket.connect();
-    set({ socket: socket });
-    socket.on("getOnlineUsers", (userIds) => {
-      set({ onlineUsers: userIds });
-      console.log(userIds);
-    });
-  },
-  
- disconnectSocket:()=>{
-  if(get().socket?.connected) get().socket.disconnect()
- }
+connectSocket: () => {
+  const { loggedUser, socket } = get();
+
+  if (socket?.connected) return;
+
+  const newSocket = io("http://localhost:5000", {
+    query: { userId: loggedUser._id },
+  });
+
+  set({ socket: newSocket });
+
+  newSocket.on("onlineUsers", (userIds) => {
+    set({ onlineUsers: userIds });
+  });
+},
+
+disconnectSocket: () => {
+  const socket = get().socket;
+
+  if (socket) {
+    socket.off("onlineUsers");
+    socket.disconnect();
+  }
+}
 
 }))
