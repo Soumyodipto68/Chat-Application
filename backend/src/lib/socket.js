@@ -2,32 +2,50 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 
-const app = express()
-const server = http.createServer(app)
+const app = express();
+const server = http.createServer(app);
 
-const io=new Server(server,{
-  cors:{
-    origin:"http://localhost:5173"
-  }
-})
-const getReceiverSocketId=(userId)=>{
-  return userSocket[userId]
-}
-const userSocket={}
-io.on("connection",(socket)=>{
-  console.log("a user connected",socket.id);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
+
+const userSocket = {};
+
+const getReceiverSocketId = (userId) => {
+  return userSocket[userId] || [];
+};
+
+io.on("connection", (socket) => {
+  console.log("a user connected", socket.id);
+
   const userId = socket.handshake.query.userId;
-  if(userId){
-    userSocket[userId] = socket.id;
-  }
-  io.emit("onlineUsers", Object.keys(userSocket))
-  socket.on("disconnect",()=>{
-    console.log("User Disconnected",socket.id);
-    if(userId){
-      delete userSocket[userId];
-      io.emit("onlineUsers", Object.keys(userSocket))
-    }
-  })
-})
 
-export {app,server,io,getReceiverSocketId}
+  if (userId) {
+    if (!userSocket[userId]) {
+      userSocket[userId] = [];
+    }
+    userSocket[userId].push(socket.id);
+  }
+
+  // Broadcast online users
+  io.emit("onlineUsers", Object.keys(userSocket));
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+
+    if (userId && userSocket[userId]) {
+      userSocket[userId] = userSocket[userId].filter(
+        (id) => id !== socket.id
+      );
+      if (userSocket[userId].length === 0) {
+        delete userSocket[userId];
+      }
+
+      io.emit("onlineUsers", Object.keys(userSocket));
+    }
+  });
+});
+
+export { app, server, io, getReceiverSocketId };
