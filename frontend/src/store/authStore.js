@@ -42,16 +42,17 @@ export const authStore = create((set,get)=>({
       toast.error("Failed to logout")
     }
   },
-  updateProfile: async(data)=>{
-    try{
-    const res= await axiosInstance.post("/auth/update-profile",data)
-    set({loggedUser:res.data})
-    toast.success("Profile Picture  updated successfully")
-    }catch (error) {
-      console.error("Error updating profile picture:", error);
-      toast.error("Failed to update profile picture")
-    }
- },
+updateProfile: async (data) => {
+  try {
+    const res = await axiosInstance.put("/auth/update-profile", data);
+
+    set({ loggedUser: res.data });
+    toast.success("Profile Picture updated successfully");
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    toast.error("Failed to update profile picture");
+  }
+},
 
   connectSocket: () => {
     const { loggedUser } = get();
