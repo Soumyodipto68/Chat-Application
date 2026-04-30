@@ -1,20 +1,29 @@
-import React from 'react'
-import ChatHeader from './ChatHeader';
-import Messages from './Messages';
-import MessageInput from './MessageInput';
+import React from "react";
+import ChatHeader from "./ChatHeader";
+import Messages from "./Messages";
+import MessageInput from "./MessageInput";
+
 const ChatContainer = () => {
   return (
-    <div className='flex flex-col h-full bg-base-100 shadow-lg md:w-auto'>
-      <ChatHeader />
-      <div className='flex-1 overflow-y-auto'>
-      <Messages />
+    <div className="h-full grid grid-rows-[auto_1fr_auto] bg-gray-900">
+      
+      {/* Header */}
+      <div>
+        <ChatHeader />
       </div>
-       <div className='flex-shrink-1 p-4 bg-base-200'>
+
+      {/* Messages (ONLY SCROLL AREA) */}
+      <div className="overflow-y-auto">
+        <Messages />
+      </div>
+
+      {/* Input (ALWAYS VISIBLE) */}
+      <div className="bg-gray-800 border-t border-gray-700 px-2 py-2">
         <MessageInput />
-       </div>
+      </div>
 
     </div>
-  )
-}
+  );
+};
 
-export default ChatContainer
+export default ChatContainer;

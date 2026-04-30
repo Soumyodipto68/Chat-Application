@@ -1,54 +1,58 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { FiMessageSquare } from "react-icons/fi";
-import { FaSignOutAlt } from "react-icons/fa";
-import { authStore } from '../store/authStore';
+import React from "react";
+import { Link } from "react-router-dom";
+import { BiMessageEdit } from "react-icons/bi";
+import { IoIosLogOut } from "react-icons/io";
+import { authStore } from "../store/authStore";
 
 const Navbar = () => {
-  const {logout, loggedUser } = authStore();
-  console.log(loggedUser);
+  const { logout, loggedUser } = authStore();
+
   return (
-    <nav className="bg-linear-to-r from-cyan-700 to-blue-700 px-5 py-1 flex items-center justify-between shadow-lg lg:px-6">
+    <nav className="bg-gradient-to-r from-gray-900 via-black to-gray-800 px-5 py-3 flex items-center justify-between shadow-lg border-b border-gray-700">
+      {/* Logo / Title */}
       <div className="flex items-center gap-3">
         <Link
           to="/"
-          className="text-white text-2xl hover:text-blue-200 transition flex shadow-md"
+          className="flex items-center text-white hover:text-indigo-400 transition"
           title="Messages"
         >
-          <span className="p-2 font-bold">
-            <FiMessageSquare className="text-5xl text-white animate-pulse bg-blue-900 p-2 rounded-lg" />
-          </span>
-          <span className="text-4xl py-2 px-2 font-bold text-whitetracking-wide drop-shadow-lg select-none">
+          <BiMessageEdit className="text-4xl text-indigo-400 bg-gray-800 p-2 rounded-lg shadow-md" />
+          <span className="ml-3 text-2xl font-bold tracking-wide select-none">
             Chatter Box
           </span>
         </Link>
       </div>
+
+      {/* Right Side */}
       {loggedUser && (
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6">
+          {/* Profile Link */}
           <Link
             to="/profile"
-            className="flex flex-row items-center text-white hover:text-blue-200 transition text-xl"
+            className="flex items-center text-gray-300 hover:text-indigo-400 transition"
             title="Profile"
           >
             <img
               src={loggedUser.profilePicture}
               alt="Profile"
-              className="w-8 h-8 rounded-full"
+              className="w-9 h-9 rounded-full border-2 border-indigo-500 shadow-md object-cover"
             />
-            <span className="text-xs ml-2">Profile</span>
+            <span className="ml-2 text-sm">Profile</span>
           </Link>
+
+          {/* Logout Button */}
           <button
-            className="flex flex-row items-center text-white hover:text-red-300 transition text-xl"
+            className="flex items-center text-gray-300 hover:text-red-400 transition"
             title="Logout"
             onClick={logout}
           >
-            <FaSignOutAlt />
-            <span className="text-xs ml-2">Logout</span>
+            <IoIosLogOut className="text-lg" />
+            <span className="ml-2 text-sm">Logout</span>
           </button>
         </div>
       )}
-    </nav> 
-  )
-}
+    </nav>
+  );
+};
 
-export default Navbar
+export default Navbar;

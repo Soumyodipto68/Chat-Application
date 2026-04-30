@@ -1,9 +1,7 @@
-import React from 'react'
+import React, { useState, useRef } from "react";
 import { MdImage } from "react-icons/md";
 import { LuSendHorizontal } from "react-icons/lu";
 import { chatStore } from "../store/chatStore";
-import { useState } from "react";
-import { useRef } from "react";
 
 const MessageInput = () => {
   const { sendMessage } = chatStore();
@@ -13,23 +11,19 @@ const MessageInput = () => {
 
   const handleImage = (e) => {
     const file = e.target.files[0];
-    if (!file) {
-      return;
-    }
+    if (!file) return;
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImage(reader.result);
-    };
+    reader.onloadend = () => setImage(reader.result);
   };
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    try {
-      await sendMessage({
-        text: text.trim(),
-        image: image,
-      });
+    if (!text.trim() && !image) return;
 
+    try {
+      await sendMessage({ text: text.trim(), image });
       setText("");
       setImage(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -39,37 +33,63 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-1 md:p-2 bg-base-200 fixed bottom-2">
-      <div className="flex items-center gap-2">
+    <div>
+      {/* Image Preview */}
+      {image && (
+        <div className="mb-2 relative w-24">
+          <img src={image} className="rounded-lg" />
+          <button
+            onClick={() => setImage(null)}
+            className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSendMessage}
+        className="flex items-center gap-2 bg-gray-700 px-3 py-2 rounded-full"
+      >
+        {/* Image Button */}
         <button
           type="button"
           onClick={() => fileInputRef.current.click()}
-          className=" rounded-lg hover:bg-base-300 flex items-center justify-center"
-          title="Attach image"
+          className="text-gray-300 hover:text-white"
         >
-          <MdImage className="size-11 text-primary" />
+          <MdImage className="w-6 h-6" />
         </button>
+
         <input
           type="file"
-          accept="image/*"
           ref={fileInputRef}
           className="hidden"
+          accept="image/*"
           onChange={handleImage}
         />
+
+        {/* Input */}
         <input
           type="text"
-          placeholder="Type a message..."
-          className="flex-1 p-2 rounded-lg md:rounded-xl focus:outline-none focus:ring-1 focus:ring-primary transition-colors text-gray-100 bg-slate-700 shadow-sm border border-base-300 text-sm md:text-base xl:w-[950px] sm:w-[520px]"
+          placeholder="Type a message"
+          className="flex-1 bg-transparent outline-none text-white placeholder-gray-400"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
+
+        {/* Send */}
         <button
-          onClick={handleSendMessage}
-          className="p-2 md:p-3 bg-primary text-white rounded-lg md:rounded-xl hover:bg-primary-focus flex items-center justify-center shadow-xl bg-slate-700"
+          type="submit"
+          disabled={!text.trim() && !image}
+          className={`p-2 rounded-full ${
+            text.trim() || image
+              ? "bg-indigo-600 text-white"
+              : "bg-gray-600 text-gray-400"
+          }`}
         >
-          <LuSendHorizontal className="w-5 h-5" />
+          <LuSendHorizontal />
         </button>
-      </div>
+      </form>
     </div>
   );
 };
