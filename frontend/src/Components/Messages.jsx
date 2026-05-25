@@ -36,7 +36,7 @@ const Messages = () => {
   return (
     <div className="flex flex-col px-3 py-2 space-y-3">
       {messages.map((message) => {
-        const isOwn = message.senderId === loggedUser?._id;
+        const isOwn = String(message.senderId) === String(loggedUser?._id);
 
         return isOwn ? (
           <div key={message._id} className="flex justify-end">
