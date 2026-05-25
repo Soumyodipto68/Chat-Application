@@ -14,7 +14,7 @@ const io = new Server(server, {
 const userSocket = {};
 
 const getReceiverSocketId = (userId) => {
-  return userSocket[userId] || [];
+  return userSocket[userId] || null;
 };
 
 io.on("connection", (socket) => {

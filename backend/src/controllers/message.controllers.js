@@ -22,10 +22,10 @@ export const getMessages = async(req,res)=>{
   try{
      const messages = await Message.find({
       $or:[
-        { sender: senderId, receiver: receiverId },
-        { sender: receiverId, receiver: senderId }
+        { senderId: senderId, receiverId: receiverId },
+        { senderId: receiverId, receiverId: senderId }
       ]
-     })
+     }).lean()
      res.status(200).json(messages) 
   }catch (error) {
     console.error("Error fetching messages:", error);
@@ -50,9 +50,11 @@ export const sendMessage = async(req,res)=>{
       image: imageUrl
   })
   await newMessage.save();
-  const receiverSocketId = getReceiverSocketId(receiverId);
-  if(receiverSocketId){
-    io.to(receiverSocketId).emit("newMessage", newMessage);
+  const receiverSocketIds = getReceiverSocketId(receiverId);
+  if(receiverSocketIds && receiverSocketIds.length > 0){
+    receiverSocketIds.forEach((socketId) => {
+      io.to(socketId).emit("newMessage", newMessage);
+    });
   }
   if(newMessage){
    res.status(201).json(newMessage);
