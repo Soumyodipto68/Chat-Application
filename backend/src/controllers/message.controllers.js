@@ -35,14 +35,23 @@ export const getMessages = async(req,res)=>{
 
 export const sendMessage = async(req,res)=>{
   try{
-    const {text,image} = req.body;
+    const {text} = req.body;
     const senderId = req.user._id;
     const receiverId = req.params._id;
     let imageUrl;
-    if(image){
-      const uploadResult = await cloudinary.uploader.upload(image)
+    
+    if(req.file){
+      // Convert buffer to base64 for Cloudinary
+      const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+      const uploadResult = await cloudinary.uploader.upload(base64, {
+        quality: "auto",
+        fetch_format: "auto",
+        folder: "chat-app",
+        resource_type: "auto"
+      })
       imageUrl = uploadResult.secure_url
     }
+    
     const newMessage = new Message({
       senderId,
       receiverId,
