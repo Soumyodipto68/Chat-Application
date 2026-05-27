@@ -6,26 +6,29 @@ import { chatStore } from "../store/chatStore";
 const MessageInput = () => {
   const { sendMessage } = chatStore();
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleImage = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    setImageFile(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = () => setImage(reader.result);
+    reader.onloadend = () => setImagePreview(reader.result);
   };
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!text.trim() && !image) return;
+    if (!text.trim() && !imageFile) return;
 
     try {
-      await sendMessage({ text: text.trim(), image });
+      await sendMessage({ text: text.trim(), imageFile });
       setText("");
-      setImage(null);
+      setImageFile(null);
+      setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("failed to send message", error);
@@ -35,11 +38,14 @@ const MessageInput = () => {
   return (
     <div>
       {/* Image Preview */}
-      {image && (
+      {imagePreview && (
         <div className="mb-2 relative w-24">
-          <img src={image} className="rounded-lg" />
+          <img src={imagePreview} className="rounded-lg" />
           <button
-            onClick={() => setImage(null)}
+            onClick={() => {
+              setImageFile(null);
+              setImagePreview(null);
+            }}
             className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded"
           >
             ✕
@@ -80,9 +86,9 @@ const MessageInput = () => {
         {/* Send */}
         <button
           type="submit"
-          disabled={!text.trim() && !image}
+          disabled={!text.trim() && !imageFile}
           className={`p-2 rounded-full ${
-            text.trim() || image
+            text.trim() || imageFile
               ? "bg-indigo-600 text-white"
               : "bg-gray-600 text-gray-400"
           }`}

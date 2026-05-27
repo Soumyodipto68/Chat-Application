@@ -41,13 +41,19 @@ const Messages = () => {
         return isOwn ? (
           <div key={message._id} className="flex justify-end">
             <div className="bg-blue-500 text-white px-3 py-2 rounded-2xl max-w-xs">
-              {message.text}
+              {message.image && (
+                <img src={message.image} alt="message" className="rounded-lg mb-2 max-w-full" />
+              )}
+              {message.text && <p>{message.text}</p>}
             </div>
           </div>
         ) : (
           <div key={message._id} className="flex">
             <div className="bg-gray-200 px-3 py-2 rounded-2xl max-w-xs">
-              {message.text}
+              {message.image && (
+                <img src={message.image} alt="message" className="rounded-lg mb-2 max-w-full" />
+              )}
+              {message.text && <p>{message.text}</p>}
             </div>
           </div>
         );

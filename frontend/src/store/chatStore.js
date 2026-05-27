@@ -34,7 +34,13 @@ export const chatStore = create((set,get)=>({
    sendMessage: async(data)=>{
       const {selectedUser,messages} = get();
       try{
-        const res = await axiosInstance.post(`/messages/sendmessage/${selectedUser._id}`, data)
+        const formData = new FormData();
+        formData.append("text", data.text);
+        if (data.imageFile) {
+          formData.append("image", data.imageFile);
+        }
+        
+        const res = await axiosInstance.post(`/messages/sendmessage/${selectedUser._id}`, formData)
         set({ messages: [...messages, res.data] });
       }catch(error){
         toast.error("Failed to send message")
