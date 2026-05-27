@@ -61,7 +61,7 @@ const MessageInput = () => {
         <button
           type="button"
           onClick={() => fileInputRef.current.click()}
-          className="text-gray-300 hover:text-white"
+          className="text-gray-300 hover:text-white cursor-pointer"
         >
           <MdImage className="w-6 h-6" />
         </button>
