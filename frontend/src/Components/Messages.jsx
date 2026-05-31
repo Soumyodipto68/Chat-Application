@@ -73,14 +73,14 @@ const Messages = () => {
               {message.image && (
                 <div className="relative mb-2 w-full">
                   {loadingImages[message._id] && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-700 rounded-lg">
-                      <AiOutlineLoading3Quarters className="w-6 h-6 animate-spin text-white" />
+                    <div className="w-40 h-40 flex items-center justify-center bg-blue-600 rounded-lg">
+                      <AiOutlineLoading3Quarters className="w-8 h-8 animate-spin text-white" />
                     </div>
                   )}
                   <img 
                     src={message.image} 
                     alt="message" 
-                    className="rounded-lg max-w-full"
+                    className={`rounded-lg max-w-full ${loadingImages[message._id] ? "hidden" : ""}`}
                     onLoadStart={() => handleImageStartLoad(message._id)}
                     onLoad={() => handleImageLoad(message._id)}
                   />
@@ -95,14 +95,14 @@ const Messages = () => {
               {message.image && (
                 <div className="relative mb-2 w-full">
                   {loadingImages[message._id] && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-300 rounded-lg">
-                      <AiOutlineLoading3Quarters className="w-6 h-6 animate-spin text-gray-600" />
+                    <div className="w-40 h-40 flex items-center justify-center bg-gray-300 rounded-lg">
+                      <AiOutlineLoading3Quarters className="w-8 h-8 animate-spin text-gray-600" />
                     </div>
                   )}
                   <img 
                     src={message.image} 
                     alt="message" 
-                    className="rounded-lg max-w-full"
+                    className={`rounded-lg max-w-full ${loadingImages[message._id] ? "hidden" : ""}`}
                     onLoadStart={() => handleImageStartLoad(message._id)}
                     onLoad={() => handleImageLoad(message._id)}
                   />

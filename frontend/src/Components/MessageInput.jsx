@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { MdImage } from "react-icons/md";
 import { LuSendHorizontal } from "react-icons/lu";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { chatStore } from "../store/chatStore";
 
 const MessageInput = () => {
@@ -8,6 +9,7 @@ const MessageInput = () => {
   const [text, setText] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleImage = (e) => {
@@ -24,6 +26,7 @@ const MessageInput = () => {
     e.preventDefault();
     if (!text.trim() && !imageFile) return;
 
+    setIsLoading(true);
     try {
       await sendMessage({ text: text.trim(), imageFile });
       setText("");
@@ -32,6 +35,8 @@ const MessageInput = () => {
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("failed to send message", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,7 +66,8 @@ const MessageInput = () => {
         <button
           type="button"
           onClick={() => fileInputRef.current.click()}
-          className="text-gray-300 hover:text-white cursor-pointer"
+          disabled={isLoading}
+          className={`text-gray-300 hover:text-white cursor-pointer ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           <MdImage className="w-6 h-6" />
         </button>
@@ -72,28 +78,34 @@ const MessageInput = () => {
           className="hidden"
           accept="image/*"
           onChange={handleImage}
+          disabled={isLoading}
         />
 
         {/* Input */}
         <input
           type="text"
           placeholder="Type a message"
-          className="flex-1 bg-transparent outline-none text-white placeholder-gray-400"
+          className="flex-1 bg-transparent outline-none text-white placeholder-gray-400 disabled:opacity-50"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          disabled={isLoading}
         />
 
         {/* Send */}
         <button
           type="submit"
-          disabled={!text.trim() && !imageFile}
-          className={`p-2 rounded-full ${
-            text.trim() || imageFile
-              ? "bg-indigo-600 text-white"
-              : "bg-gray-600 text-gray-400"
+          disabled={(!text.trim() && !imageFile) || isLoading}
+          className={`p-2 rounded-full flex items-center justify-center ${
+            (text.trim() || imageFile) && !isLoading
+              ? "bg-indigo-600 text-white hover:bg-indigo-700"
+              : "bg-gray-600 text-gray-400 cursor-not-allowed"
           }`}
         >
-          <LuSendHorizontal />
+          {isLoading ? (
+            <AiOutlineLoading3Quarters className="w-5 h-5 animate-spin" />
+          ) : (
+            <LuSendHorizontal />
+          )}
         </button>
       </form>
     </div>
