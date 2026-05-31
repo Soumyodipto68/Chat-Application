@@ -49,15 +49,27 @@ export const chatStore = create((set,get)=>({
    },
   listenForNewMessage: () => {
     const socket = authStore.getState().socket;
+    socket.off("newMessage"); // Remove any existing listeners to avoid duplicates
     socket.on("newMessage", (newMessage) => {
-      set({ messages: [...get().messages, newMessage] });
+      const { selectedUser } = get();
+      const { loggedUser } = authStore.getState();
+      
+      // Only add message if it's for the current selected chat
+      if (selectedUser && loggedUser) {
+        const isRelevantMessage = 
+          (String(newMessage.senderId) === String(selectedUser._id) && String(newMessage.receiverId) === String(loggedUser._id)) ||
+          (String(newMessage.receiverId) === String(selectedUser._id) && String(newMessage.senderId) === String(loggedUser._id));
+        
+        if (isRelevantMessage) {
+          set({ messages: [...get().messages, newMessage] });
+        }
+      }
     });
   },
 
-
-    stopListeningForMessages:()=>{
-      const socket = authStore.getState().socket;
-      socket.off("newMessage")
-   }
+  stopListeningForMessages:()=>{
+    const socket = authStore.getState().socket;
+    socket.off("newMessage")
+  }
 
 }))
